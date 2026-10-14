@@ -1,0 +1,16 @@
+.git
+.agents
+.aws
+.codex
+.env
+.env.*
+.runtime
+logs
+build
+install
+log
+__pycache__
+compose.override.yml
+compose.override.yaml
+docker-compose.override.yml
+docker-compose.override.yaml

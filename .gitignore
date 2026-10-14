@@ -1,0 +1,43 @@
+# Machine-specific configuration and display authorization
+.env
+.env.*
+!.env.example
+.runtime/
+compose.override.yml
+compose.override.yaml
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# ROS / colcon build outputs and logs
+build/
+install/
+log/
+logs/
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local editor, assistant, and credential files
+.idea/
+.vscode/
+.agents/
+.codex/
+.claude/
+.aws/
+.ssh/
+.gnupg/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# OS and editor temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

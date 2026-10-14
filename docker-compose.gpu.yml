@@ -1,0 +1,6 @@
+# Optional Intel/AMD integrated or discrete GPU access.
+# The host must provide /dev/dri; use together with docker-compose.yml.
+services:
+  ros2:
+    devices:
+      - /dev/dri:/dev/dri

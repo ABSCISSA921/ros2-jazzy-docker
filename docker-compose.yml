@@ -1,0 +1,59 @@
+services:
+  ros2:
+    image: ${ROS2_IMAGE:-ros2-jazzy-dev:local}
+    build:
+      context: .
+      args:
+        UBUNTU_APT_MIRROR: ${UBUNTU_APT_MIRROR:-}
+        ROS_APT_MIRROR: ${ROS_APT_MIRROR:-}
+        MUJOCO_VERSION: ${MUJOCO_VERSION:-3.15.0}
+        HTTP_PROXY: ${BUILD_HTTP_PROXY:-}
+        HTTPS_PROXY: ${BUILD_HTTPS_PROXY:-}
+        http_proxy: ${BUILD_HTTP_PROXY:-}
+        https_proxy: ${BUILD_HTTPS_PROXY:-}
+    working_dir: ${HOST_HOME_DIR:-${HOME:?Set HOST_HOME_DIR or HOME to an absolute host directory}}
+    restart: ${RESTART_POLICY:-no}
+    network_mode: host
+    privileged: true
+    command: tail -f /dev/null
+    environment:
+      DISPLAY: ${DISPLAY:-}
+      XAUTHORITY: /run/ros2-gui/Xauthority
+      QT_X11_NO_MITSHM: "1"
+      TZ: ${TZ:-Asia/Shanghai}
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+      RMW_IMPLEMENTATION: ${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
+      ROS_AUTOMATIC_DISCOVERY_RANGE: ${ROS_AUTOMATIC_DISCOVERY_RANGE:-SUBNET}
+      ROS_STATIC_PEERS: ${ROS_STATIC_PEERS:-}
+      FASTRTPS_DEFAULT_PROFILES_FILE: /etc/ros/fastdds.xml
+      HTTP_PROXY: ${HTTP_PROXY:-}
+      HTTPS_PROXY: ${HTTPS_PROXY:-}
+      ALL_PROXY: ${ALL_PROXY:-}
+      NO_PROXY: ${NO_PROXY:-localhost,127.0.0.1,::1}
+    volumes:
+      # X11/XWayland GUI socket and locally generated display credentials.
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - type: bind
+        source: ./.runtime/gui
+        target: /run/ros2-gui
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./fastdds.xml
+        target: /etc/ros/fastdds.xml
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${HOST_HOME_DIR:-${HOME:?Set HOST_HOME_DIR or HOME to an absolute host directory}}
+        target: ${HOST_HOME_DIR:-${HOME:?Set HOST_HOME_DIR or HOME to an absolute host directory}}
+        bind:
+          create_host_path: false
+      - vscode-server-data:/root/.vscode-server
+      - vscode-extensions:/root/.vscode/extensions
+    ipc: host
+
+volumes:
+  vscode-server-data:
+  vscode-extensions:
